@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ethara | Project Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-wrap">
+      <header class="hero">
+        <h1>Ethara Project Tracker</h1>
+        <p>Create projects, assign tasks, and track delivery with clear roles.</p>
+      </header>
+
+      <main class="container">
+        <section id="authSection" class="panel auth-panel">
+          <h2>Login / Signup</h2>
+          <div class="auth-grid">
+            <form id="signupForm" class="card">
+              <h3>Signup</h3>
+              <label>Name</label>
+              <input type="text" name="name" required minlength="2" maxlength="80" />
+
+              <label>Email</label>
+              <input type="email" name="email" required />
+
+              <label>Password</label>
+              <input type="password" name="password" required minlength="6" />
+
+              <label>Role</label>
+              <select name="role">
+                <option value="MEMBER">Member</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+
+              <button type="submit">Create Account</button>
+            </form>
+
+            <form id="loginForm" class="card">
+              <h3>Login</h3>
+              <label>Email</label>
+              <input type="email" name="email" required />
+
+              <label>Password</label>
+              <input type="password" name="password" required />
+
+              <button type="submit">Login</button>
+            </form>
+          </div>
+        </section>
+
+        <section id="appSection" class="hidden">
+          <div class="panel">
+            <div class="toolbar">
+              <div>
+                <h2>Dashboard</h2>
+                <p id="welcomeText"></p>
+              </div>
+              <button id="logoutBtn" class="ghost-btn">Logout</button>
+            </div>
+
+            <div id="dashboardCards" class="stats-grid"></div>
+          </div>
+
+          <div class="grid-2">
+            <section class="panel">
+              <div class="toolbar">
+                <h2>Projects</h2>
+              </div>
+
+              <form id="projectForm" class="card hidden">
+                <h3>Create Project</h3>
+                <label>Project Name</label>
+                <input type="text" name="name" required minlength="2" maxlength="120" />
+                <label>Description</label>
+                <textarea name="description" rows="3"></textarea>
+                <button type="submit">Create Project</button>
+              </form>
+
+              <div id="projectList" class="list"></div>
+            </section>
+
+            <section class="panel">
+              <h2>Project Details</h2>
+              <p class="subtle">Select a project to view members and tasks.</p>
+
+              <div id="projectDetails" class="details-placeholder">
+                No project selected.
+              </div>
+
+              <form id="memberForm" class="card hidden">
+                <h3>Add Member</h3>
+                <label>User</label>
+                <select name="userId"></select>
+                <label>Project Role</label>
+                <select name="role">
+                  <option value="MEMBER">Member</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+                <button type="submit">Add / Update Member</button>
+              </form>
+
+              <form id="taskForm" class="card hidden">
+                <h3>Create Task</h3>
+                <label>Title</label>
+                <input type="text" name="title" required minlength="2" maxlength="140" />
+                <label>Description</label>
+                <textarea name="description" rows="3"></textarea>
+                <label>Assign To</label>
+                <select name="assignedTo">
+                  <option value="">Unassigned</option>
+                </select>
+                <label>Due Date</label>
+                <input type="date" name="dueDate" />
+                <button type="submit">Create Task</button>
+              </form>
+            </section>
+          </div>
+
+          <section class="panel">
+            <h2>All Tasks (Accessible)</h2>
+            <div id="taskBoard" class="list"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>
