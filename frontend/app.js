@@ -18,6 +18,17 @@ const projectForm = document.getElementById("projectForm");
 const memberForm = document.getElementById("memberForm");
 const taskForm = document.getElementById("taskForm");
 const toast = document.getElementById("toast");
+const authForm = document.getElementById("authForm");
+const authTitle = document.getElementById("authTitle");
+const authSubmitBtn = document.getElementById("authSubmitBtn");
+const loginTab = document.getElementById("loginTab");
+const signupTab = document.getElementById("signupTab");
+const signupOnlyFields = document.getElementById("signupOnlyFields");
+const authNameInput = authForm.querySelector('input[name="name"]');
+const authRoleInput = authForm.querySelector('select[name="role"]');
+const authPasswordInput = authForm.querySelector('input[name="password"]');
+
+let authMode = "login";
 
 function showToast(message, isError = false) {
   toast.textContent = message;
@@ -275,47 +286,54 @@ async function initializeApp() {
   }
 }
 
-document.getElementById("signupForm").addEventListener("submit", async (event) => {
+function setAuthMode(mode) {
+  authMode = mode;
+  const isSignup = mode === "signup";
+  authTitle.textContent = isSignup ? "Signup" : "Login";
+  authSubmitBtn.textContent = isSignup ? "Create Account" : "Login";
+  signupOnlyFields.classList.toggle("hidden", !isSignup);
+  loginTab.classList.toggle("active", !isSignup);
+  signupTab.classList.toggle("active", isSignup);
+  authNameInput.required = isSignup;
+  authPasswordInput.minLength = isSignup ? 6 : 1;
+}
+
+authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const form = new FormData(event.target);
   try {
-    const data = await api("/api/auth/signup", {
+    const endpoint = authMode === "signup" ? "/api/auth/signup" : "/api/auth/login";
+    const payload =
+      authMode === "signup"
+        ? {
+            name: form.get("name"),
+            email: form.get("email"),
+            password: form.get("password"),
+            role: form.get("role")
+          }
+        : {
+            email: form.get("email"),
+            password: form.get("password")
+          };
+
+    const data = await api(endpoint, {
       method: "POST",
-      body: JSON.stringify({
-        name: form.get("name"),
-        email: form.get("email"),
-        password: form.get("password"),
-        role: form.get("role")
-      })
+      body: JSON.stringify(payload)
     });
     state.token = data.token;
     localStorage.setItem("ethara_token", data.token);
-    showToast("Account created");
+    showToast(authMode === "signup" ? "Account created" : "Login successful");
+    event.target.reset();
+    authRoleInput.value = "MEMBER";
+    setAuthMode("login");
     await initializeApp();
   } catch (error) {
     showToast(error.message, true);
   }
 });
 
-document.getElementById("loginForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const form = new FormData(event.target);
-  try {
-    const data = await api("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: form.get("email"),
-        password: form.get("password")
-      })
-    });
-    state.token = data.token;
-    localStorage.setItem("ethara_token", data.token);
-    showToast("Login successful");
-    await initializeApp();
-  } catch (error) {
-    showToast(error.message, true);
-  }
-});
+loginTab.addEventListener("click", () => setAuthMode("login"));
+signupTab.addEventListener("click", () => setAuthMode("signup"));
 
 projectForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -392,7 +410,11 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
   localStorage.removeItem("ethara_token");
   authSection.classList.remove("hidden");
   appSection.classList.add("hidden");
+  authForm.reset();
+  authRoleInput.value = "MEMBER";
+  setAuthMode("login");
   showToast("Logged out");
 });
 
+setAuthMode("login");
 initializeApp();

@@ -21,12 +21,24 @@
 
       <main class="container">
         <section id="authSection" class="panel auth-panel">
-          <h2>Login / Signup</h2>
-          <div class="auth-grid">
-            <form id="signupForm" class="card">
-              <h3>Signup</h3>
-              <label>Name</label>
-              <input type="text" name="name" required minlength="2" maxlength="80" />
+          <h2 id="authTitle">Login</h2>
+          <div class="auth-single-wrap">
+            <div class="auth-toggle" role="tablist" aria-label="Authentication mode">
+              <button id="loginTab" type="button" class="tab-btn active">Login</button>
+              <button id="signupTab" type="button" class="tab-btn">Signup</button>
+            </div>
+
+            <form id="authForm" class="card auth-single-card">
+              <div id="signupOnlyFields" class="hidden">
+                <label>Name</label>
+                <input type="text" name="name" minlength="2" maxlength="80" />
+
+                <label>Role</label>
+                <select name="role">
+                  <option value="MEMBER">Member</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+              </div>
 
               <label>Email</label>
               <input type="email" name="email" required />
@@ -34,24 +46,7 @@
               <label>Password</label>
               <input type="password" name="password" required minlength="6" />
 
-              <label>Role</label>
-              <select name="role">
-                <option value="MEMBER">Member</option>
-                <option value="ADMIN">Admin</option>
-              </select>
-
-              <button type="submit">Create Account</button>
-            </form>
-
-            <form id="loginForm" class="card">
-              <h3>Login</h3>
-              <label>Email</label>
-              <input type="email" name="email" required />
-
-              <label>Password</label>
-              <input type="password" name="password" required />
-
-              <button type="submit">Login</button>
+              <button id="authSubmitBtn" type="submit">Login</button>
             </form>
           </div>
         </section>

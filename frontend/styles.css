@@ -74,6 +74,33 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
+.auth-single-wrap {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.auth-single-card {
+  margin-top: 10px;
+}
+
+.auth-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.tab-btn {
+  background: #edf6f3;
+  color: var(--primary-2);
+  border: 1px solid #bcd8d1;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
 .grid-2 {
   grid-template-columns: 1fr 1fr;
 }
